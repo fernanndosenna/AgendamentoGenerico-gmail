@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <!--importação do css do fullcalendar-->
+    <link rel="stylesheet" href="main.css">
+    <!--importação do javascript do fullcalendar-->
+    <script src="main.js"></script>
+</head>
+<body>
+        <div id="calendar"></div>
+</body>
+<!--script que irá gerar o calendário-->
+<script>
+    var element = document.getElementById("calendar");
+    var calendar = new FullCalendar.Calendar(element, {
+        initialView: 'dayGridMonth',
+        locale: 'pt-br',
+        events: 'getcalendar', //nome da rota para desenhar o calendario
+        eventClick: function(info){
+            window.location.href = '/event/' + info.event.id; //enviar para uma página, que exibirá os detalhes do evento clickado
+        }
+    })
+    
+    calendar.render();
+
+</script>
+</html>

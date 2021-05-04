@@ -1,0 +1,13 @@
+Para baixar o fullcalendar, é necessário ir ao site https://fullcalendar.io/  
+e logo depois, procurar o download do zip da biblioteca, e pegar todos os arquivos contidos na pasta lib,
+e puxar para a pastar public do projeto.
+
+
+Sistema de máscara, como aplicar no CPF  por exemplo ?
+
+Primeiramente, é necessário entar no site https://igorescobar.github.io/jQuery-Mask-Plugin/
+ para baixar o plugin de máscara
+
+ *clickar em download now
+
+ *pegar o arquivo da pastar dist somente jquery.mask.min, e puxar para pasta public, e pronto, agora é so importar na view
