@@ -94,7 +94,23 @@ app.get("/searchresult", async (req,res) => {
 //verificando se a consulta está a 1 hora de acontecer, caso sim, é enviado um e-mail para o cliente avisando.
 //verificação a cada 5 minutos
 
-var pollTime = 1000 * 60 * 5 ;
+var pollTime = 5000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
 
 setInterval(async () => {
     

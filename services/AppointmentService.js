@@ -1,7 +1,8 @@
 var appointment = require('../models/Appointment');
 var mongoose = require("mongoose");
 var AppointmentFactory = require("../factories/AppointmentFactory");
-var mailer = require("nodemailer");
+var nodemailer = require("nodemailer");
+var SMTP_CONFIG = require("../config/smtp")
 //model de consulta
 const Appo = mongoose.model("Appointment", appointment);
 
@@ -85,14 +86,18 @@ class AppointmentService {
     async SendNotification(){
         var appos  = await this.GetAll(false); //pegando consultas que nao foram finalizadas
 
-        var transporter = mailer.createTransport({ //configuraçoes do mail trap
-            host: "smtp.mailtrap.io",
-            port: 25, //porta padrao do mail trap
-            auth: { // configuraçoes do mail trap
-                user: "1c6ba0e7182dad",
-                pass: "7fd7f524f2bdaf"
-            }
 
+        const transporter = nodemailer.createTransport({
+            host: SMTP_CONFIG.host,
+            port: SMTP_CONFIG.port,
+            secure: true,
+            auth: {
+                user: SMTP_CONFIG.user,
+                pass: SMTP_CONFIG.pass
+            },
+            tls:{
+                rejectUnauthorized: false,
+            },
         })
 
         //calculo de datas
@@ -105,19 +110,24 @@ class AppointmentService {
 
               //envio do e-mail
               if(!app.notified){ // se consulta ainda não foi notificada
-
+            
                 await Appo.findByIdAndUpdate(app.id, {notified: true});
 
-                transporter.sendMail({
-                    from: "Antonio Sena <victor@guia.com.br>",
-                    to: app.email, // enviar para o email da consulta
-                    subject: "Sua consulta irá acontecer embreve!",
-                    text:"Conteúdo qualquer!!! sua consulta irá acontecer em 1 hora"
-                }).then(() => {
 
-                }).catch(err => {
+                try{
+                    const mailSent = await transporter.sendMail({
 
-                })
+                        text: "Sua consulta será daqui a 1 hora",
+                        subject: "Consulta em 1 hora",
+                        from: "Antonio Sena <antonio.fernando.pf@gmail.com>",
+                        to: ['antonio.fernando.pf@gmail.com'] //substituir por app.email do cliente
+                    })
+                    console.log(mailSent);
+
+                }catch(err){
+                    console.log(err);
+                }
+            
 
               }
             }
